@@ -1,0 +1,28 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: yapi-gateway
+  cloud:
+    gateway:
+      #配置动态路由
+      routes:
+        - id: api-interface #唯一路由表示，没有实际作用不重复就好，建议配合服务名
+          uri: http://localhost:8123/ #匹配后提供服务的路由地址，lb后跟提供服务的微服务名，不要写错
+          predicates: #?? ?????????
+            - Path=/api/**    #以“api”开头的请求都负载到http://localhost:8123/
+#          filters: #???????????????????
+#            - StripPrefix=1  #???????
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+#    org.springframework.cloud.loadbalancer: trace
+#    org.springframework.web.reactive: trace
+dubbo:
+  application:
+    name: dubbo-springboot-demo-consumer
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848
